@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import base44 from '@base44/sdk/vite' // <-- add this
+import base44 from '@base44/sdk/vite'
 
 export default defineConfig({
   logLevel: 'error',
@@ -10,8 +10,8 @@ export default defineConfig({
       hmrNotifier: true,
       navigationNotifier: true,
       analyticsTracker: true,
-      visualEditAgent: true
+      visualEditAgent: true,
     }),
     react(),
-  ]
+  ],
 })
