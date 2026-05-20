@@ -11,14 +11,27 @@ const actionTypes = {
   REMOVE_TOAST: "REMOVE_TOAST",
 };
 
+// Lazy initialization to avoid module-level side effects during build
+let initialized = false;
 let count = 0;
+let toastTimeouts = new Map();
+let listeners = [];
+let memoryState = { toasts: [] };
+
+function init() {
+  if (!initialized) {
+    initialized = true;
+    count = 0;
+    toastTimeouts = new Map();
+    listeners = [];
+    memoryState = { toasts: [] };
+  }
+}
 
 function genId() {
   count = (count + 1) % Number.MAX_VALUE;
   return count.toString();
 }
-
-const toastTimeouts = new Map();
 
 const addToRemoveQueue = (toastId) => {
   if (toastTimeouts.has(toastId)) {
@@ -99,11 +112,8 @@ export const reducer = (state, action) => {
   }
 };
 
-const listeners = [];
-
-let memoryState = { toasts: [] };
-
 function dispatch(action) {
+  init();
   memoryState = reducer(memoryState, action);
   listeners.forEach((listener) => {
     listener(memoryState);
@@ -111,6 +121,7 @@ function dispatch(action) {
 }
 
 function toast({ ...props }) {
+  init();
   const id = genId();
 
   const update = (props) =>
@@ -142,6 +153,7 @@ function toast({ ...props }) {
 }
 
 function useToast() {
+  init();
   const [state, setState] = useState(memoryState);
 
   useEffect(() => {
@@ -161,4 +173,4 @@ function useToast() {
   };
 }
 
-export { useToast, toast }; 
+export { useToast, toast };
