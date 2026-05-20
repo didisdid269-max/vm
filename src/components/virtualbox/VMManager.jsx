@@ -2,7 +2,7 @@ import { useState } from "react";
 import CreateVMDialog from "@/components/virtualbox/CreateVMDialog";
 import { Play, Plus, Trash2 } from "lucide-react";
 
-export default function VMManager({ vms, onStart, onCreate, onDelete }) {
+function VMManager({ vms, onStart, onCreate, onDelete }) {
   const [showCreate, setShowCreate] = useState(false);
   const [selected, setSelected] = useState(vms[0] || null);
 
@@ -130,3 +130,5 @@ function Stat({ label, value }) {
     </div>
   );
 }
+
+export default VMManager;
